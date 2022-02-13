@@ -3,6 +3,9 @@
     "target": "es6",
     "module": "commonjs",
     "rootDir": "./",
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+    "outDir": "./dist"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/public", "./node_modules"]
 }

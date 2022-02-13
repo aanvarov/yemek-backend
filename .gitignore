@@ -1,4 +1,8 @@
 # ignoring node_modules folder
-# ignoring .git folder
-node_modules
-.git
+.cache/
+.vscode/
+dist/
+node_modules/
+.env
+.DS_Store
+*.log
