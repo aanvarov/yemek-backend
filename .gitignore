@@ -1,0 +1,4 @@
+# ignoring node_modules folder
+# ignoring .git folder
+node_modules
+.git
