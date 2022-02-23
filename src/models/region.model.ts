@@ -1,12 +1,23 @@
 import mongoose, { Schema } from 'mongoose';
 
-const RegionSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-});
+export interface RegionDocument extends mongoose.Document {
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-const Region = mongoose.model('Region', RegionSchema);
+const RegionSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  },
+);
+
+const Region = mongoose.model<RegionDocument>('Region', RegionSchema);
 
 export default Region;

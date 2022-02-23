@@ -1,8 +1,9 @@
 import mongoose, { Schema } from 'mongoose';
+import { RegionDocument } from './region.model';
 
 export interface CityDocument extends mongoose.Document {
   name: string;
-  region: string;
+  region: RegionDocument['_id'];
   createdAt: Date;
   updatedAt: Date;
 }
