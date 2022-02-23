@@ -1,5 +1,6 @@
 import mongoose, { Schema, Types } from 'mongoose';
 import { CategoryDocument } from './category.model';
+import { RatingDocument } from './rating.model';
 
 enum Status {
   IN_STOCK = 'instock',
@@ -10,15 +11,15 @@ export interface FoodDocument extends mongoose.Document {
   name: string;
   price: number;
   img: string;
-  rating: number;
+  rating: RatingDocument['_id'][];
   description: string;
-  size: [string];
+  size: string[];
   status: Status;
   category: CategoryDocument['_id'];
   prepareTime: number;
   active: boolean;
-  toppings: [string];
-  ingredients: [string];
+  toppings: string[];
+  ingredients: string[];
   isFeatured: boolean;
   featuredExpiresAt: Date;
   featuredStartsAt: Date;
@@ -31,7 +32,7 @@ const FoodSchema = new Schema(
     name: { type: String, required: true },
     price: { type: Number, required: true },
     img: { type: String, required: true },
-    rating: { type: Number, default: 0 },
+    rating: { type: [{ type: Schema.Types.ObjectId, ref: 'Rating' }], default: [] },
     description: { type: String, required: true },
     size: { type: Types.Array, default: [] },
     status: { type: String, enum: Object.values(Status), default: Status.IN_STOCK },

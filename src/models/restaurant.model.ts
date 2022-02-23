@@ -13,7 +13,7 @@ export interface RestaurantDocument extends mongoose.Document {
   paid: boolean;
   website: string;
   imgUrl: string;
-  workdays: Types.Array<string>;
+  workdays: string[];
   openHour: string;
   closeHour: string;
   delivery: boolean;
