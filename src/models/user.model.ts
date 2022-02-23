@@ -1,11 +1,33 @@
 import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
 import config from 'config';
+import { CityDocument } from './city.model';
+import { RegionDocument } from './region.model';
+import { RestaurantDocument } from './restaurant.model';
+
+enum UserRole {
+  CUSTOMER = 'customer',
+  DELIVER = 'deliver',
+  MANAGER = 'manager',
+  COOK = 'cook',
+}
 
 export interface UserDocument extends mongoose.Document {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
+  role: UserRole;
+  restaurant: RestaurantDocument['_id'];
+  phone: string;
+  favorites: mongoose.Types.ObjectId[];
+  address: string;
+  city: CityDocument['_id'];
+  region: RegionDocument['_id'];
+  active: boolean;
+  passwordRequested: boolean;
+  passwordRequestedAt: Date;
+  passwordRequestExpiresAt: Date;
   createdAt: Date;
   updatedAt: Date;
   comparePassword: (candidatePassword: string) => Promise<boolean>;
@@ -13,9 +35,29 @@ export interface UserDocument extends mongoose.Document {
 
 const UserSchema = new Schema(
   {
+    lastName: { type: String, required: true },
+    firstName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    name: { type: String, required: true },
     password: { type: String, required: true },
+    role: {
+      type: String,
+      enum: Object.values(UserRole),
+      required: true,
+      default: UserRole.CUSTOMER,
+    },
+    restaurant: {
+      type: Schema.Types.ObjectId,
+      ref: 'Restaurant',
+    },
+    phone: { type: String, required: true },
+    favorites: [{ type: Schema.Types.ObjectId, ref: 'Food' }],
+    address: { type: String, default: '' },
+    city: { type: Schema.Types.ObjectId, ref: 'City' },
+    region: { type: Schema.Types.ObjectId, ref: 'Region' },
+    active: { type: Boolean, default: true },
+    passwordRequested: { type: Boolean, default: false },
+    passwordRequestedAt: { type: Date, default: null },
+    passwordRequestExpiresAt: { type: Date, default: null },
   },
   { timestamps: true },
 );
