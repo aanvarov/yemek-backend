@@ -49,7 +49,7 @@ const UserSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Restaurant',
     },
-    phone: { type: String, required: true },
+    phone: { type: String, required: true, unique: true },
     favorites: [{ type: Schema.Types.ObjectId, ref: 'Food' }],
     address: { type: String, default: '' },
     city: { type: Schema.Types.ObjectId, ref: 'City' },
