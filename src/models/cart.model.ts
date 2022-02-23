@@ -3,7 +3,7 @@ import { FoodDocument } from './food.model';
 import { UserDocument } from './user.model';
 import { RestaurantDocument } from './restaurant.model';
 
-enum DiscountType {
+export enum DiscountType {
   PERCENTAGE = 'percentage',
   NUMBER = 'number',
 }
