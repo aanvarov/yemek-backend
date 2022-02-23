@@ -7,10 +7,11 @@ import { decode, sign } from '../utils/jwt.utils';
 import { get } from 'lodash';
 import { findUser } from './user.service';
 
-export async function createSession(userId: string, userAgent: string) {
+export async function createSession(userId: string, userAgent: string, userIpAddress: string) {
   const session = await Session.create({
     user: userId,
     userAgent,
+    userIpAddress,
   });
   return session.toJSON();
 }
@@ -61,4 +62,8 @@ export async function updateSession(
   update: UpdateQuery<SessionDocument>,
 ) {
   return Session.updateOne(query, update);
+}
+
+export async function findSessions(query: FilterQuery<SessionDocument>) {
+  return Session.find(query).lean();
 }

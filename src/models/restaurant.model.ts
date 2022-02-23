@@ -1,6 +1,8 @@
-import { model, Schema, Types } from 'mongoose';
+import mongoose, { Schema, Types } from 'mongoose';
+import bcrypt from 'bcrypt';
+import config from 'config';
 
-interface IRestaurant {
+export interface RestaurantDocument extends mongoose.Document {
   name: string;
   phone: string;
   workPhone: string;
@@ -21,9 +23,10 @@ interface IRestaurant {
   passwordRequested: boolean;
   passwordRequestExpiresAt: Date;
   superAdmin: boolean;
+  comparePassword: (candidatePassword: string) => Promise<boolean>;
 }
 
-const RestaurantSchema = new Schema<IRestaurant>(
+const RestaurantSchema = new Schema(
   {
     name: { type: String, default: '', required: true, unique: true },
     phone: { type: String, default: '', required: true, unique: true },
@@ -49,6 +52,32 @@ const RestaurantSchema = new Schema<IRestaurant>(
   { timestamps: true },
 );
 
-const Restaurant = model<IRestaurant>('Restaurant', RestaurantSchema);
+RestaurantSchema.pre('save', async function (next) {
+  const restaurant = this as RestaurantDocument;
+
+  // only hash the password if it has been modified (or is new)
+  if (!restaurant.isModified('password')) return next();
+
+  // Random additional salt
+  const salt = await bcrypt.genSalt(config.get('saltWorkFactor') as number);
+
+  // Hash the password along with our new salt
+  const hash = await bcrypt.hash(restaurant.password, salt);
+
+  // Override the cleartext password with the hashed one
+  restaurant.password = hash;
+  return next();
+});
+
+// Used for logging in
+RestaurantSchema.methods.comparePassword = async function (
+  candidatePassword: string,
+): Promise<boolean> {
+  const restaurant = this as RestaurantDocument;
+  const isMatch = await bcrypt.compare(candidatePassword, restaurant.password);
+  return isMatch;
+};
+
+const Restaurant = mongoose.model<RestaurantDocument>('Restaurant', RestaurantSchema);
 
 export default Restaurant;

@@ -5,6 +5,7 @@ export interface SessionDocument extends mongoose.Document {
   user: UserDocument['_id'];
   valid: boolean;
   userAgent: string;
+  userIpAddress: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -20,6 +21,9 @@ const SessionSchema = new mongoose.Schema(
       default: true,
     },
     userAgent: {
+      type: String,
+    },
+    userIpAddress: {
       type: String,
     },
   },

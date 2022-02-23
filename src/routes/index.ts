@@ -1,8 +1,16 @@
 import { Express, Request, Response } from 'express';
 import authRoute from './auth.routes';
+import categoryRoute from './category.routes';
 
 export default (app: Express): void => {
+  app.get('/', (req: Request, res: Response) => {
+    res.send('Hello World!, This is Yemek API');
+  });
+  // Endpoints for authentication
   app.use('/api/v1/auth', authRoute);
+
+  // Endpoints for categories
+  app.use('/api/v1/categories', categoryRoute);
 
   // app.use('/api/v1', routes.users);
   // app.use('/api/v1/carts', routes.carts);
