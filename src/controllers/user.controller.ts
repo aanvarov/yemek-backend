@@ -8,10 +8,12 @@ import log from '../logger';
 // this means we can separate database logic from our business logic
 export async function createUserHandler(req: Request, res: Response) {
   try {
+    log.info(req.body);
     const user = await createUser(req.body);
-    log.info(`User ${user.email} created`);
+    log.info(`User ${user.phone} created`);
     return res.status(201).send(omit(user.toJSON(), ['password']));
   } catch (error) {
+    log.error('Error creating user');
     log.error(error);
     return res.status(409).send(error.message);
   }

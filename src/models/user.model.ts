@@ -37,7 +37,7 @@ const UserSchema = new Schema(
   {
     lastName: { type: String, required: true },
     firstName: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, default: '' },
     password: { type: String, required: true },
     role: {
       type: String,
