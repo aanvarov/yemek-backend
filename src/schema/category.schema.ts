@@ -4,7 +4,7 @@ const payload = {
   body: object({
     name: string().required('Name is required'),
     description: string().required('Description is required'),
-    // restaurant: ref('Restaurant').required(),
+    restaurant: ref('Restaurant'),
   }),
 };
 
@@ -24,5 +24,9 @@ export const updateCategorySchema = object({
 });
 
 export const deleteCategorySchema = object({
+  ...params,
+});
+
+export const getCategorySchema = object({
   ...params,
 });

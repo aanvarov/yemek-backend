@@ -3,6 +3,7 @@ import { FilterQuery, LeanDocument, UpdateQuery } from 'mongoose';
 import log from '../logger';
 import Session, { SessionDocument } from '../models/session.model';
 import { UserDocument } from '../models/user.model';
+import { RestaurantDocument } from '../models/restaurant.model';
 import { decode, sign } from '../utils/jwt.utils';
 import { get } from 'lodash';
 import { findUser } from './user.service';
@@ -16,7 +17,8 @@ export async function createSession(userId: string, userAgent: string, userIpAdd
   return session.toJSON();
 }
 
-export async function createAccessToken({
+// creating access token for user
+export async function createUserAccessToken({
   user,
   session,
 }: {
@@ -38,6 +40,30 @@ export async function createAccessToken({
   return accessToken;
 }
 
+// creating access token for restaurant
+export async function createRestaurantAccessToken({
+  restaurant,
+  session,
+}: {
+  restaurant:
+    | Omit<RestaurantDocument, 'password'>
+    | LeanDocument<Omit<RestaurantDocument, 'password'>>;
+  session: Omit<SessionDocument, 'password'> | LeanDocument<Omit<SessionDocument, 'password'>>;
+}) {
+  // build and return the new access token
+  const accessToken = sign(
+    {
+      ...restaurant,
+      session: session._id,
+    },
+    {
+      expiresIn: config.get('accessTokenTtl'),
+    },
+  );
+  // log.info(accessToken);
+  return accessToken;
+}
+
 export async function reIssueAccessToken({ refreshToken }: { refreshToken: string }) {
   // decode the refresh token
   const { decoded } = decode(refreshToken);
@@ -52,7 +78,7 @@ export async function reIssueAccessToken({ refreshToken }: { refreshToken: strin
   const user = await findUser({ _id: session.user });
   if (!user) return false;
 
-  const accessToken = await createAccessToken({ user, session });
+  const accessToken = await createUserAccessToken({ user, session });
 
   return accessToken;
 }

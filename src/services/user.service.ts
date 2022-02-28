@@ -11,10 +11,14 @@ export async function createUser(input: DocumentDefinition<UserDocument>) {
 }
 
 export async function findUser(query: FilterQuery<UserDocument>) {
-  return await User.findOne(query).lean();
+  try {
+    return await User.findOne(query).lean();
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
-export async function validatePassword({
+export async function validateUserPassword({
   email,
   password,
 }: {

@@ -1,15 +1,16 @@
 import express from 'express';
-const router = express.Router();
 import { createUserHandler } from '../controllers/user.controller';
+import { createRestaurantHandler } from '../controllers/restaurant.controller';
 import {
   createUserSessionHandler,
-  invalidateUserSessionHandler,
+  createRestaurantSessionHandler,
+  invalidateSessionHandler,
   getUserSessionsHandler,
 } from '../controllers/session.controller';
-import {} from '../controllers/restaurant.controller';
 import { createUserSchema, createUserSessionSchema } from '../schema/user.schema';
 import { createRestaurantSchema, createRestaurantSessionSchema } from '../schema/restaurant.schema';
 import { validateRequest, requiresUser } from '../middleware';
+const router = express.Router();
 
 /*
  * GET
@@ -24,14 +25,25 @@ import { validateRequest, requiresUser } from '../middleware';
 
 // sign up a new user
 router.post('/signup', validateRequest(createUserSchema), createUserHandler);
-// login with session
+// login with session token (customer)
 router.post('/sessions', validateRequest(createUserSessionSchema), createUserSessionHandler);
 // get user's session
 router.get('/sessions', getUserSessionsHandler);
 // log out a user
 // delete requiresUser middleware to test the route in postman
-router.delete('/sessions', invalidateUserSessionHandler);
+router.delete('/sessions', invalidateSessionHandler);
 
 // sign up a new restaurant
-router.post('/restaurants', validateRequest(createRestaurantSchema), createRestaurantHandler);
+router.post(
+  '/restaurants/signup',
+  validateRequest(createRestaurantSchema),
+  createRestaurantHandler,
+);
+// login with session for restaurants
+router.post(
+  '/restaurants/sessions',
+  validateRequest(createRestaurantSessionSchema),
+  createRestaurantSessionHandler,
+);
+
 export default router;

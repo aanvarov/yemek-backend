@@ -14,7 +14,7 @@ export async function findRestaurant(query: FilterQuery<RestaurantDocument>) {
   return Restaurant.findOne(query).lean();
 }
 
-export async function validatePassword({
+export async function validateRestaurantPassword({
   email,
   password,
 }: {
