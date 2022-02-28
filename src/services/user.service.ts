@@ -11,7 +11,7 @@ export async function createUser(input: DocumentDefinition<UserDocument>) {
 }
 
 export async function findUser(query: FilterQuery<UserDocument>) {
-  return User.findOne(query).lean();
+  return await User.findOne(query).lean();
 }
 
 export async function validatePassword({

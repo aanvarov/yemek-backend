@@ -6,7 +6,9 @@ import {
   invalidateUserSessionHandler,
   getUserSessionsHandler,
 } from '../controllers/session.controller';
+import {} from '../controllers/restaurant.controller';
 import { createUserSchema, createUserSessionSchema } from '../schema/user.schema';
+import { createRestaurantSchema, createRestaurantSessionSchema } from '../schema/restaurant.schema';
 import { validateRequest, requiresUser } from '../middleware';
 
 /*
@@ -29,4 +31,7 @@ router.get('/sessions', getUserSessionsHandler);
 // log out a user
 // delete requiresUser middleware to test the route in postman
 router.delete('/sessions', invalidateUserSessionHandler);
+
+// sign up a new restaurant
+router.post('/restaurants', validateRequest(createRestaurantSchema), createRestaurantHandler);
 export default router;
