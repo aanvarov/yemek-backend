@@ -1,6 +1,7 @@
-import mongoose, { Schema, Types } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import { CategoryDocument } from './category.model';
 import { RatingDocument } from './rating.model';
+import { RestaurantDocument } from './restaurant.model';
 
 enum Status {
   IN_STOCK = 'instock',
@@ -16,6 +17,7 @@ export interface FoodDocument extends mongoose.Document {
   size: string[];
   status: Status;
   category: CategoryDocument['_id'];
+  restaurant: RestaurantDocument['_id'];
   prepareTime: number;
   active: boolean;
   toppings: string[];
@@ -34,16 +36,21 @@ const FoodSchema = new Schema(
     img: { type: String, required: true },
     rating: { type: [{ type: Schema.Types.ObjectId, ref: 'Rating' }], default: [] },
     description: { type: String, required: true },
-    size: { type: Types.Array, default: [] },
+    size: { type: Schema.Types.Array, default: [] },
     status: { type: String, enum: Object.values(Status), default: Status.IN_STOCK },
     category: {
       type: [{ type: Schema.Types.ObjectId, ref: 'Category' }],
       default: [],
+      required: true,
+    },
+    restaurant: {
+      type: Schema.Types.ObjectId,
+      ref: 'Restaurant',
     },
     prepareTime: { type: Number, default: 0 },
     active: { type: Boolean, default: true },
-    toppings: { type: Types.Array, default: [] },
-    ingredients: { type: Types.Array, default: [] },
+    toppings: { type: Schema.Types.Array, default: [] },
+    ingredients: { type: Schema.Types.Array, default: [] },
     isFeatured: { type: Boolean, default: false },
     featuredExpiresAt: { type: Date, default: null },
     featuredStartsAt: { type: Date, default: null },

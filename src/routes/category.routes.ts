@@ -19,8 +19,8 @@ import {
 // create a category
 router.post('/', [requiresUser, validateRequest(createCategorySchema)], createCategoryHandler);
 
-// get all categories
-router.get('/', requiresUser, getCategoriesHandler);
+// get all categories (, requiresUser)
+router.get('/', getCategoriesHandler);
 
 // get a category
 router.get('/:categoryId', validateRequest(getCategorySchema), getCategoryHandler);

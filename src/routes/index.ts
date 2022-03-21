@@ -1,6 +1,7 @@
 import { Express, Request, Response } from 'express';
 import authRoute from './auth.routes';
 import categoryRoute from './category.routes';
+import foodRoute from './food.routes';
 
 export default (app: Express): void => {
   app.get('/', (req: Request, res: Response) => {
@@ -11,8 +12,7 @@ export default (app: Express): void => {
 
   // Endpoints for categories
   app.use('/api/v1/categories', categoryRoute);
-
-  // app.use('/api/v1', routes.users);
+  app.use('/api/v1/foods', foodRoute);
   // app.use('/api/v1/carts', routes.carts);
   // app.use('/api/v1/category', routes.category);
   // app.use('/api/v1/city', routes.city);

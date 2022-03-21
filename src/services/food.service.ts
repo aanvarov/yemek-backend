@@ -3,14 +3,22 @@ import log from '../logger';
 import Food, { FoodDocument } from '../models/food.model';
 
 export async function createFood(input: DocumentDefinition<FoodDocument>) {
-  return await Food.create(input);
+  try {
+    return await Food.create(input);
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
 export async function findFood(
   query: FilterQuery<FoodDocument>,
   options: QueryOptions = { lean: true },
 ) {
-  return await Food.findOne(query, {}, options);
+  try {
+    return await Food.findOne(query, {}, options);
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
 export async function findFoods(

@@ -2,8 +2,8 @@ import { object, string, ref } from 'yup';
 
 export const createRestaurantSchema = object({
   body: object({
-    firstName: string().required('First Name is required'),
-    lastName: string().required('Last Name is required'),
+    name: string().required('Name is required').min(3, 'Name must be at least 3 characters long'),
+    email: string().required('Email is required').email('Email is invalid'),
     phone: string().required('Phone is required'),
     password: string()
       .required('Password is required')
