@@ -20,10 +20,10 @@ import {
 router.post('/', [requiresUser, validateRequest(createCategorySchema)], createCategoryHandler);
 
 // get all categories (, requiresUser)
-router.get('/', getCategoriesHandler);
+router.get('/', requiresUser, getCategoriesHandler);
 
 // get a category
-router.get('/:categoryId', validateRequest(getCategorySchema), getCategoryHandler);
+router.get('/:categoryId', [requiresUser, validateRequest(getCategorySchema)], getCategoryHandler);
 
 // update a category
 router.put(

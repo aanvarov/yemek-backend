@@ -4,7 +4,7 @@ import {
   createCategory,
   findCategory,
   findCategories,
-  findAndUpdate,
+  updateCategory,
   deleteCategory,
 } from '../services/category.service';
 
@@ -30,7 +30,7 @@ export async function updateCategoryHandler(req: Request, res: Response) {
   if (String(category.restaurant) !== String(userId)) {
     return res.sendStatus(401);
   }
-  const updatedCategory = await findAndUpdate({ _id: categoryId }, update, { new: true });
+  const updatedCategory = await updateCategory({ _id: categoryId }, update, { new: true });
 
   return res.send(updatedCategory);
 }

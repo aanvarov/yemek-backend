@@ -31,7 +31,7 @@ export async function findCategories(
   }
 }
 
-export async function findAndUpdate(
+export async function updateCategory(
   query: FilterQuery<CategoryDocument>,
   update: UpdateQuery<CategoryDocument>,
   options: QueryOptions,
