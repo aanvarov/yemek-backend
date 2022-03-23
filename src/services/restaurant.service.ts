@@ -15,14 +15,14 @@ export async function findRestaurant(query: FilterQuery<RestaurantDocument>) {
 }
 
 export async function validateRestaurantPassword({
-  email,
+  phone,
   password,
 }: {
-  email: RestaurantDocument['email'];
+  phone: RestaurantDocument['phone'];
   password: string;
 }) {
   // lean method returns a plain javascript object, not a mongoose document
-  const restaurant = await Restaurant.findOne({ email });
+  const restaurant = await Restaurant.findOne({ phone });
 
   if (!restaurant) return false;
 

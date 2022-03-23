@@ -42,11 +42,11 @@ export async function createUserSessionHandler(req: Request, res: Response) {
 
 // session handler for restaurants
 export async function createRestaurantSessionHandler(req: Request, res: Response) {
-  // validate the email and password
+  // validate the phone and password
   const restaurant = await validateRestaurantPassword(req.body);
   const restaurantIpAddress = await get(req, 'socket.remoteAddress');
   if (!restaurant) {
-    return res.status(401).send('Invalid email or password');
+    return res.status(401).send('Invalid phone or password');
   }
   // create session
   const session = await createSession(
