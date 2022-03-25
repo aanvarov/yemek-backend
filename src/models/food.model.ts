@@ -31,7 +31,7 @@ export interface FoodDocument extends mongoose.Document {
 
 const FoodSchema = new Schema(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     price: { type: Number, required: true },
     img: { type: String, required: true },
     rating: { type: [{ type: Schema.Types.ObjectId, ref: 'Rating' }], default: [] },
