@@ -46,4 +46,8 @@ router.post(
   createRestaurantSessionHandler,
 );
 
+// log out a restaurant
+// delete requiresUser middleware to test the route in postman
+router.delete('/restaurants/sessions', invalidateSessionHandler);
+
 export default router;

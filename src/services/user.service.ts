@@ -19,14 +19,14 @@ export async function findUser(query: FilterQuery<UserDocument>) {
 }
 
 export async function validateUserPassword({
-  email,
+  phone,
   password,
 }: {
-  email: UserDocument['email'];
+  phone: UserDocument['phone'];
   password: string;
 }) {
   // lean method returns a plain javascript object, not a mongoose document
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ phone });
 
   if (!user) return false;
 
