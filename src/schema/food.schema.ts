@@ -12,7 +12,7 @@ const payload = {
 
 const params = {
   params: object({
-    categoryId: string().required('Category ID is required'),
+    foodId: string().required('Food ID is required'),
   }),
 };
 
