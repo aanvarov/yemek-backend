@@ -16,7 +16,7 @@ export interface FoodDocument extends mongoose.Document {
   description: string;
   size: string[];
   status: Status;
-  category: CategoryDocument['_id'];
+  category: CategoryDocument['_id'][];
   restaurant: RestaurantDocument['_id'];
   prepareTime: number;
   active: boolean;

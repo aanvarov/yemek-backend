@@ -23,6 +23,7 @@ export interface RestaurantDocument extends mongoose.Document {
   passwordRequested: boolean;
   passwordRequestExpiresAt: Date;
   superAdmin: boolean;
+  isRestaurant: boolean;
   comparePassword: (candidatePassword: string) => Promise<boolean>;
 }
 
@@ -48,6 +49,7 @@ const RestaurantSchema = new Schema(
     passwordRequestedAt: { type: Date, default: null },
     passwordRequestExpiresAt: { type: Date, default: null },
     superAdmin: { type: Boolean, default: false },
+    isRestaurant: { type: Boolean, default: true },
   },
   { timestamps: true },
 );

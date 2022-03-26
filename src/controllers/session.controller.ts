@@ -60,9 +60,12 @@ export async function createRestaurantSessionHandler(req: Request, res: Response
     session,
   });
   // create refresh token
-  const refreshToken = sign(session, {
-    expiresIn: config.get('refreshTokenTtl'), // 1 year
-  });
+  const refreshToken = sign(
+    { ...session, isRestaurant: restaurant.isRestaurant },
+    {
+      expiresIn: config.get('refreshTokenTtl'), // 1 year
+    },
+  );
   // send access token and refresh token
   res.send({
     restaurant,

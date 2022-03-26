@@ -7,6 +7,7 @@ import { RestaurantDocument } from '../models/restaurant.model';
 import { decode, sign } from '../utils/jwt.utils';
 import { get } from 'lodash';
 import { findUser } from './user.service';
+import { findRestaurant } from './restaurant.service';
 
 export async function createSession(userId: string, userAgent: string, userIpAddress: string) {
   const session = await Session.create({
@@ -67,6 +68,7 @@ export async function createRestaurantAccessToken({
 export async function reIssueAccessToken({ refreshToken }: { refreshToken: string }) {
   // decode the refresh token
   const { decoded } = decode(refreshToken);
+  console.log('decodedddddd', decoded);
 
   if (!decoded || !get(decoded, '_id')) return false;
 
@@ -75,7 +77,15 @@ export async function reIssueAccessToken({ refreshToken }: { refreshToken: strin
   // making sure the session is valid
   if (!session && !session.valid) return false;
 
-  const user = await findUser({ _id: session.user });
+  // const { ...rest } = decoded;
+  const isRestaurant = get(decoded as any, 'isRestaurant');
+  let user: any;
+  if (isRestaurant) {
+    user = await findRestaurant({ _id: session.user });
+  } else {
+    user = await findUser({ _id: session.user });
+  }
+
   if (!user) return false;
 
   const accessToken = await createUserAccessToken({ user, session });

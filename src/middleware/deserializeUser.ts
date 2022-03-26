@@ -6,22 +6,23 @@ import log from '../logger';
 
 const deserializeUser = async (req: Request, res: Response, next: NextFunction) => {
   const accessToken = get(req, 'headers.authorization', '').replace(/^Bearer\s/, '');
-  const refreshToken = get(req, 'headers.x-refresh-token');
+  const refreshToken = get(req, 'headers.x-refresh-token').replace(/^Bearer\s/, '');
   // log.info({ remoteIp: get(req, 'socket.remoteAddress') });
 
   if (!accessToken) return next();
 
   const { decoded, expired } = decode(accessToken);
-  log.info({ expiredToken: expired });
+  // log.info({ expiredToken: expired });
 
   if (decoded) {
     // @ts-ignore
     req.user = decoded;
     return next();
   }
+
   if (expired && refreshToken) {
     const newAccessToken = await reIssueAccessToken({ refreshToken });
-    // log.info('new x-access-token', newAccessToken);
+    console.log('newAccessToken', newAccessToken);
     if (newAccessToken) {
       // Add the new access token to the response header
       res.setHeader('x-access-token', newAccessToken);

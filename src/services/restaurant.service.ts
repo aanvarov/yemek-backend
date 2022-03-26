@@ -11,7 +11,11 @@ export async function createRestaurant(input: DocumentDefinition<RestaurantDocum
 }
 
 export async function findRestaurant(query: FilterQuery<RestaurantDocument>) {
-  return Restaurant.findOne(query).lean();
+  try {
+    return await Restaurant.findOne(query).lean();
+  } catch (error) {
+    throw new Error(error);
+  }
 }
 
 export async function validateRestaurantPassword({
