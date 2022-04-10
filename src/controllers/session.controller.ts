@@ -19,7 +19,7 @@ export async function createUserSessionHandler(req: Request, res: Response) {
   const user = await validateUserPassword(req.body);
   const userIpAddress = await get(req, 'socket.remoteAddress');
   if (!user) {
-    return res.status(401).send('Invalid email or password');
+    return res.status(401).send({ message: 'Invalid email or password' });
   }
   // create session
   const session = await createSession(user._id, req.get('user-agent' || ''), userIpAddress);

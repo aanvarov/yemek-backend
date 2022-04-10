@@ -12,7 +12,8 @@ const deserializeUser = async (req: Request, res: Response, next: NextFunction) 
   if (!accessToken) return next();
 
   const { decoded, expired } = decode(accessToken);
-  // log.info({ expiredToken: expired });
+  log.info({ expiredToken: expired });
+  // log.info({ decodedData: decoded });
 
   if (decoded) {
     // @ts-ignore
@@ -22,12 +23,13 @@ const deserializeUser = async (req: Request, res: Response, next: NextFunction) 
 
   if (expired && refreshToken) {
     const newAccessToken = await reIssueAccessToken({ refreshToken });
-    console.log('newAccessToken', newAccessToken);
     if (newAccessToken) {
       // Add the new access token to the response header
       res.setHeader('x-access-token', newAccessToken);
       // tslint:disable-next-line: no-shadowed-variable
       const { decoded } = decode(newAccessToken);
+      // console.log('newAccessToken inside if', newAccessToken);
+      // console.log(' res inside if', { ...res });
 
       // @ts-ignore
       req.user = decoded;

@@ -68,7 +68,7 @@ export async function createRestaurantAccessToken({
 export async function reIssueAccessToken({ refreshToken }: { refreshToken: string }) {
   // decode the refresh token
   const { decoded } = decode(refreshToken);
-  console.log('decodedddddd', decoded);
+  // console.log('decodedddddd', decoded);
 
   if (!decoded || !get(decoded, '_id')) return false;
 

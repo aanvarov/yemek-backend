@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { get } from 'lodash';
+import log from '../logger';
 import { createFood, findFood, findFoods, updateFood, deleteFood } from '../services/food.service';
 
 export async function createFoodHandler(req: Request, res: Response) {
@@ -29,7 +30,8 @@ export async function updateFoodHandler(req: Request, res: Response) {
 
 export async function getFoodsHandler(req: Request, res: Response) {
   const userId = get(req, 'user._id');
-  const foods = await findFoods({ restaurant: userId });
+  const foods = await findFoods({});
+  // log.info(foods);
   return res.send(foods);
 }
 

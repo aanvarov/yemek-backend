@@ -12,7 +12,7 @@ const validate = (schema: AnySchema) => async (req: Request, res: Response, next
     return next();
   } catch (error) {
     log.error(error);
-    return res.status(400).send(error.errors);
+    return res.status(400).send({ message: error.errors.join(', ') });
   }
 };
 

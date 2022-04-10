@@ -37,7 +37,7 @@ export async function updateCategoryHandler(req: Request, res: Response) {
 
 export async function getCategoriesHandler(req: Request, res: Response) {
   const userId = get(req, 'user._id');
-  const categories = await findCategories({ restaurant: userId });
+  const categories = await findCategories({});
   return res.send(categories);
 }
 
