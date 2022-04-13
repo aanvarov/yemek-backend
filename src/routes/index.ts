@@ -7,10 +7,6 @@ import regionRoute from './region.routes';
 import cityRoute from './city.routes';
 
 export default (app: Express): void => {
-  app.get('/', (req: Request, res: Response) => {
-    res.send('Hello World!, This is Yemek API');
-  });
-
   // Endpoints for authentication
   app.use('/api/v1/auth', authRoute);
 

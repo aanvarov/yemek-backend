@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import express, { Express, Request, Response } from 'express';
 import config from 'config';
 import log from './logger';
 import * as dotenv from 'dotenv';
@@ -13,6 +13,9 @@ const host = config.get('host') as string;
 
 const app: Express = express();
 app.use(cors({ origin: true, credentials: true }));
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello World!, This is Yemek API');
+});
 app.use(deserializeUser);
 
 app.use(express.json());
