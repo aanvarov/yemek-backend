@@ -25,7 +25,7 @@ export async function findFoods(
   query: FilterQuery<FoodDocument>,
   options: QueryOptions = { lean: true },
 ) {
-  return await Food.find(query, {}, options);
+  return await Food.find(query, {}, options).populate('restaurant');
 }
 
 export async function updateFood(
