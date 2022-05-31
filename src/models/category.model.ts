@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema } from "mongoose";
 
 export interface CategoryDocument extends mongoose.Document {
   name: string;
@@ -14,7 +14,6 @@ const CategorySchema = new Schema(
     name: {
       type: String,
       required: true,
-      unique: true,
     },
     description: {
       type: String,
@@ -22,14 +21,14 @@ const CategorySchema = new Schema(
     },
     restaurant: {
       type: Schema.Types.ObjectId,
-      ref: 'Restaurant',
+      ref: "Restaurant",
     },
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-const Category = mongoose.model<CategoryDocument>('Category', CategorySchema);
+const Category = mongoose.model<CategoryDocument>("Category", CategorySchema);
 
 export default Category;

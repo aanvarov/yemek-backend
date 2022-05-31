@@ -1,8 +1,10 @@
-import Restaurant, { RestaurantDocument } from '../models/restaurant.model';
-import { DocumentDefinition, FilterQuery, LeanDocument } from 'mongoose';
-import { omit } from 'lodash';
+import Restaurant, { RestaurantDocument } from "../models/restaurant.model";
+import { DocumentDefinition, FilterQuery, LeanDocument } from "mongoose";
+import { omit } from "lodash";
 
-export async function createRestaurant(input: DocumentDefinition<RestaurantDocument>) {
+export async function createRestaurant(
+  input: DocumentDefinition<RestaurantDocument>
+) {
   try {
     return await Restaurant.create(input);
   } catch (error) {
@@ -22,7 +24,7 @@ export async function validateRestaurantPassword({
   phone,
   password,
 }: {
-  phone: RestaurantDocument['phone'];
+  phone: RestaurantDocument["phone"];
   password: string;
 }) {
   // lean method returns a plain javascript object, not a mongoose document
@@ -34,7 +36,7 @@ export async function validateRestaurantPassword({
 
   if (!isValid) return false;
 
-  return omit(restaurant.toJSON(), 'password') as
-    | Omit<RestaurantDocument, 'password'>
-    | LeanDocument<Omit<RestaurantDocument, 'password'>>;
+  return omit(restaurant.toJSON(), "password") as
+    | Omit<RestaurantDocument, "password">
+    | LeanDocument<Omit<RestaurantDocument, "password">>;
 }

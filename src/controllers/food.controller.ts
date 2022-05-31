@@ -1,23 +1,47 @@
-import { Request, Response } from 'express';
-import { get } from 'lodash';
-import log from '../logger';
-import { createFood, findFood, findFoods, updateFood, deleteFood } from '../services/food.service';
+import { Request, Response } from "express";
+import { get } from "lodash";
+import log from "../logger";
+import {
+  createFood,
+  findFood,
+  findFoods,
+  updateFood,
+  deleteFood,
+} from "../services/food.service";
 
 export async function createFoodHandler(req: Request, res: Response) {
-  const userId = get(req, 'user._id');
+  const userId = get(req, "user._id");
   const body = req.body;
+  const isExist = await findFood({
+    name: body.name,
+    category: body.category,
+    restaurant: userId,
+  });
+  if (isExist) {
+    return res.status(409).json({ error: "Food already exist" });
+  }
   const food = await createFood({ ...body, restaurant: userId });
   return res.status(201).send(food);
 }
 
 export async function updateFoodHandler(req: Request, res: Response) {
-  const userId = get(req, 'user._id');
-  const foodId = get(req, 'params.foodId');
+  const userId = get(req, "user._id");
+  const foodId = get(req, "params.foodId");
   const update = req.body;
 
   const food = await findFood({ _id: foodId });
 
   if (!food) return res.sendStatus(404);
+
+  const isExist = await findFood({
+    name: update.name,
+    category: update.category,
+    restaurant: userId,
+  });
+
+  if (isExist) {
+    return res.status(409).json({ error: "Food already exist" });
+  }
 
   // food user id will be restaurant id
   if (String(food.restaurant) !== String(userId)) {
@@ -29,15 +53,22 @@ export async function updateFoodHandler(req: Request, res: Response) {
 }
 
 export async function getFoodsHandler(req: Request, res: Response) {
-  const userId = get(req, 'user._id');
+  const userId = get(req, "user._id");
+  const foods = await findFoods({ restaurant: userId });
+  // log.info(foods);
+  return res.send(foods);
+}
+
+export async function getFoodsHandlerMobile(req: Request, res: Response) {
+  const userId = get(req, "user._id");
   const foods = await findFoods({});
   // log.info(foods);
   return res.send(foods);
 }
 
 export async function getFoodHandler(req: Request, res: Response) {
-  const userId = get(req, 'user._id');
-  const foodId = get(req, 'params.foodId');
+  const userId = get(req, "user._id");
+  const foodId = get(req, "params.foodId");
   const food = await findFood({ _id: foodId });
   if (!food) return res.sendStatus(404);
   if (String(food.restaurant) !== String(userId)) {
@@ -47,8 +78,8 @@ export async function getFoodHandler(req: Request, res: Response) {
 }
 
 export async function deleteFoodHandler(req: Request, res: Response) {
-  const userId = get(req, 'user._id');
-  const foodId = get(req, 'params.foodId');
+  const userId = get(req, "user._id");
+  const foodId = get(req, "params.foodId");
   const food = await findFood({ _id: foodId });
   if (!food) return res.sendStatus(404);
   if (String(food.restaurant) !== String(userId)) {

@@ -1,5 +1,5 @@
-import express from 'express';
-import { requiresUser, validateRequest } from '../middleware';
+import express from "express";
+import { requiresUser, validateRequest } from "../middleware";
 const router = express.Router();
 import {
   createRegionHandler,
@@ -7,32 +7,44 @@ import {
   getRegionHandler,
   getRegionsHandler,
   deleteRegionHandler,
-} from '../controllers/region.controller';
+} from "../controllers/region.controller";
 
 import {
   createRegionSchema,
   updateRegionSchema,
   deleteRegionSchema,
   getRegionSchema,
-} from '../schema/region.schema';
+} from "../schema/region.schema";
 
-// create a cart
-router.post('/', [requiresUser, validateRequest(createRegionSchema)], createRegionHandler);
+// create a region
+router.post(
+  "/",
+  [requiresUser, validateRequest(createRegionSchema)],
+  createRegionHandler
+);
 
-// get all cart (, requiresUser)
-router.get('/', requiresUser, getRegionsHandler);
+// get all region (, requiresUser)
+router.get("/", requiresUser, getRegionsHandler);
 
-// get a cart
-router.get('/:regionId', [requiresUser, validateRequest(getRegionSchema)], getRegionHandler);
+// get a region
+router.get(
+  "/:regionId",
+  [requiresUser, validateRequest(getRegionSchema)],
+  getRegionHandler
+);
 
-// update a cart
-router.put('/:regionId', [requiresUser, validateRequest(updateRegionSchema)], updateRegionHandler);
+// update a region
+router.put(
+  "/:regionId",
+  [requiresUser, validateRequest(updateRegionSchema)],
+  updateRegionHandler
+);
 
-// delete a cart
+// delete a region
 router.delete(
-  '/:regionId',
+  "/:regionId",
   [requiresUser, validateRequest(deleteRegionSchema)],
-  deleteRegionHandler,
+  deleteRegionHandler
 );
 
 export default router;

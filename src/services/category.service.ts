@@ -1,17 +1,25 @@
-import { DocumentDefinition, FilterQuery, UpdateQuery, QueryOptions } from 'mongoose';
-import Category, { CategoryDocument } from '../models/category.model';
+import {
+  DocumentDefinition,
+  FilterQuery,
+  UpdateQuery,
+  QueryOptions,
+} from "mongoose";
+import Category, { CategoryDocument } from "../models/category.model";
 
-export async function createCategory(input: DocumentDefinition<CategoryDocument>) {
+export async function createCategory(
+  input: DocumentDefinition<CategoryDocument>
+) {
   try {
     return await Category.create(input);
   } catch (error) {
+    console.log("category", error);
     throw new Error(error);
   }
 }
 
 export async function findCategory(
   query: FilterQuery<CategoryDocument>,
-  options: QueryOptions = { lean: true },
+  options: QueryOptions = { lean: true }
 ) {
   try {
     return await Category.findOne(query, {}, options);
@@ -22,7 +30,7 @@ export async function findCategory(
 
 export async function findCategories(
   query: FilterQuery<CategoryDocument>,
-  options: QueryOptions = { lean: true },
+  options: QueryOptions = { lean: true }
 ) {
   try {
     return await Category.find(query, {}, options);
@@ -34,7 +42,7 @@ export async function findCategories(
 export async function updateCategory(
   query: FilterQuery<CategoryDocument>,
   update: UpdateQuery<CategoryDocument>,
-  options: QueryOptions,
+  options: QueryOptions
 ) {
   try {
     return await Category.findOneAndUpdate(query, update, options);

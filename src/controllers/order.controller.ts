@@ -9,17 +9,10 @@ import {
 } from "../services/category.service";
 import log from "../logger";
 
-export async function createCategoryHandler(req: Request, res: Response) {
+export async function createOrderHandler(req: Request, res: Response) {
   try {
     const userId = get(req, "user._id");
     const body = req.body;
-    const isExist = await findCategory({
-      name: body.name,
-      restaurant: userId,
-    });
-    if (isExist) {
-      return res.status(409).json({ error: "Category already exist" });
-    }
     const category = await createCategory({ ...body, restaurant: userId });
     return res.status(201).send(category);
   } catch (error) {
@@ -29,7 +22,7 @@ export async function createCategoryHandler(req: Request, res: Response) {
   }
 }
 
-export async function updateCategoryHandler(req: Request, res: Response) {
+export async function updateOrderHandler(req: Request, res: Response) {
   const userId = get(req, "user._id");
   const categoryId = get(req, "params.categoryId");
   const update = req.body;
@@ -38,14 +31,6 @@ export async function updateCategoryHandler(req: Request, res: Response) {
 
   if (!category) {
     return res.sendStatus(404);
-  }
-
-  const isExist = await findCategory({
-    name: update.name,
-    restaurant: userId,
-  });
-  if (isExist) {
-    return res.status(409).json({ error: "Category already exist" });
   }
 
   // category user id will be restaurant id
@@ -59,21 +44,20 @@ export async function updateCategoryHandler(req: Request, res: Response) {
   return res.send(updatedCategory);
 }
 
-export async function getCategoriesHandler(req: Request, res: Response) {
+export async function getOrdersHandler(req: Request, res: Response) {
   const userId = get(req, "user._id");
-  console.log("jeeee", userId);
-  const categories = await findCategories({ restaurant: userId });
+  const categories = await findCategories({});
   return res.send(categories);
 }
 
-export async function getCategoryHandler(req: Request, res: Response) {
+export async function getOrderHandler(req: Request, res: Response) {
   const categoryId = get(req, "params.categoryId");
   const category = await findCategory({ _id: categoryId });
   if (!category) return res.sendStatus(404);
   return res.send(category);
 }
 
-export async function deleteCategoryHandler(req: Request, res: Response) {
+export async function deleteOrderHandler(req: Request, res: Response) {
   const userId = get(req, "user._id");
   const categoryId = get(req, "params.categoryId");
   const category = await findCategory({ _id: categoryId });
