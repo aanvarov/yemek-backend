@@ -6,6 +6,7 @@ import cartRoute from "./cart.routes";
 import regionRoute from "./region.routes";
 import cityRoute from "./city.routes";
 import orderRoute from "./order.routes";
+import restaurantRoute from "./restaurant.routes";
 
 export default (app: Express): void => {
   // Endpoints for authentication
@@ -29,8 +30,10 @@ export default (app: Express): void => {
   // Endpoint for orders
   app.use("/api/v1/orders", orderRoute);
 
+  // Endpoint for restaurants
+  app.use("/api/v1/restaurants", restaurantRoute);
+
   // app.use('/api/v1/favorite', routes.favorite);
   // app.use('/api/v1/order', routes.order);
   // app.use('/api/v1/rating', routes.rating);
-  // app.use('/api/v1/restaurant', routes.restaurant);
 };

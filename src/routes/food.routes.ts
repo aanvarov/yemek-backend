@@ -17,37 +17,21 @@ import {
 } from "../schema/food.schema";
 
 // create a food
-router.post(
-  "/",
-  [requiresUser, validateRequest(createFoodSchema)],
-  createFoodHandler
-);
+router.post("/", [requiresUser, validateRequest(createFoodSchema)], createFoodHandler);
 
 // get all foods
 router.get("/", requiresUser, getFoodsHandler);
 
-// get all foods
-router.get("/mobile", requiresUser, getFoodsHandlerMobile);
+// get all foods mobile
+router.get("/mobile/:resId", requiresUser, getFoodsHandlerMobile);
 
 // get a food
-router.get(
-  "/:foodId",
-  [requiresUser, validateRequest(getFoodSchema)],
-  getFoodHandler
-);
+router.get("/:foodId", [requiresUser, validateRequest(getFoodSchema)], getFoodHandler);
 
 // update a food
-router.put(
-  "/:foodId",
-  [requiresUser, validateRequest(updateFoodSchema)],
-  updateFoodHandler
-);
+router.put("/:foodId", [requiresUser, validateRequest(updateFoodSchema)], updateFoodHandler);
 
 // delete a food
-router.delete(
-  "/:foodId",
-  [requiresUser, validateRequest(deleteFoodSchema)],
-  deleteFoodHandler
-);
+router.delete("/:foodId", [requiresUser, validateRequest(deleteFoodSchema)], deleteFoodHandler);
 
 export default router;

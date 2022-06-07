@@ -1,13 +1,7 @@
 import { Request, Response } from "express";
 import { get } from "lodash";
 import log from "../logger";
-import {
-  createFood,
-  findFood,
-  findFoods,
-  updateFood,
-  deleteFood,
-} from "../services/food.service";
+import { createFood, findFood, findFoods, updateFood, deleteFood } from "../services/food.service";
 
 export async function createFoodHandler(req: Request, res: Response) {
   const userId = get(req, "user._id");
@@ -34,6 +28,7 @@ export async function updateFoodHandler(req: Request, res: Response) {
   if (!food) return res.sendStatus(404);
 
   const isExist = await findFood({
+    _id: { $ne: foodId },
     name: update.name,
     category: update.category,
     restaurant: userId,
@@ -61,7 +56,8 @@ export async function getFoodsHandler(req: Request, res: Response) {
 
 export async function getFoodsHandlerMobile(req: Request, res: Response) {
   const userId = get(req, "user._id");
-  const foods = await findFoods({});
+  const resId = get(req, "params.resId");
+  const foods = await findFoods({ restaurant: resId });
   // log.info(foods);
   return res.send(foods);
 }

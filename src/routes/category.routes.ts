@@ -7,6 +7,7 @@ import {
   getCategoryHandler,
   getCategoriesHandler,
   deleteCategoryHandler,
+  getCategoriesHandlerMobile,
 } from "../controllers/category.controller";
 
 import {
@@ -17,21 +18,16 @@ import {
 } from "../schema/category.schema";
 
 // create a category
-router.post(
-  "/",
-  [requiresUser, validateRequest(createCategorySchema)],
-  createCategoryHandler
-);
+router.post("/", [requiresUser, validateRequest(createCategorySchema)], createCategoryHandler);
 
 // get all categories (, requiresUser)
 router.get("/", requiresUser, getCategoriesHandler);
 
+// get all categories mobile
+router.get("/mobile/:resId", requiresUser, getCategoriesHandlerMobile);
+
 // get a category
-router.get(
-  "/:categoryId",
-  [requiresUser, validateRequest(getCategorySchema)],
-  getCategoryHandler
-);
+router.get("/:categoryId", [requiresUser, validateRequest(getCategorySchema)], getCategoryHandler);
 
 // update a category
 router.put(

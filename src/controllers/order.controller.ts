@@ -1,22 +1,22 @@
 import { Request, Response } from "express";
 import { get } from "lodash";
 import {
-  createCategory,
-  findCategory,
-  findCategories,
-  updateCategory,
-  deleteCategory,
-} from "../services/category.service";
+  createOrder,
+  findOrder,
+  findOrders,
+  updateOrder,
+  deleteOrder,
+} from "../services/order.service";
 import log from "../logger";
 
 export async function createOrderHandler(req: Request, res: Response) {
   try {
     const userId = get(req, "user._id");
     const body = req.body;
-    const category = await createCategory({ ...body, restaurant: userId });
+    const category = await createOrder({ ...body, restaurant: userId });
     return res.status(201).send(category);
   } catch (error) {
-    log.error("Error creating category");
+    log.error("Error creating order");
     log.error(error);
     return res.status(409).json({ error: error.message });
   }
@@ -24,46 +24,60 @@ export async function createOrderHandler(req: Request, res: Response) {
 
 export async function updateOrderHandler(req: Request, res: Response) {
   const userId = get(req, "user._id");
-  const categoryId = get(req, "params.categoryId");
+  const orderId = get(req, "params.orderId");
   const update = req.body;
 
-  const category = await findCategory({ _id: categoryId });
+  const order = await findOrder({ _id: orderId });
 
-  if (!category) {
+  if (!order) {
     return res.sendStatus(404);
   }
 
   // category user id will be restaurant id
-  if (String(category.restaurant) !== String(userId)) {
+  if (String(order.restaurant) !== String(userId)) {
     return res.sendStatus(401);
   }
-  const updatedCategory = await updateCategory({ _id: categoryId }, update, {
+  const updatedOrder = await updateOrder({ _id: orderId }, update, {
     new: true,
   });
 
-  return res.send(updatedCategory);
+  return res.send(updateOrder);
 }
 
 export async function getOrdersHandler(req: Request, res: Response) {
   const userId = get(req, "user._id");
-  const categories = await findCategories({});
+  const categories = await findOrders({});
   return res.send(categories);
 }
 
 export async function getOrderHandler(req: Request, res: Response) {
-  const categoryId = get(req, "params.categoryId");
-  const category = await findCategory({ _id: categoryId });
-  if (!category) return res.sendStatus(404);
-  return res.send(category);
+  const orderId = get(req, "params.orderId");
+  const order = await findOrder({ _id: orderId });
+  if (!order) return res.sendStatus(404);
+  return res.send(order);
 }
 
 export async function deleteOrderHandler(req: Request, res: Response) {
   const userId = get(req, "user._id");
-  const categoryId = get(req, "params.categoryId");
-  const category = await findCategory({ _id: categoryId });
-  if (!category) return res.sendStatus(404);
-  // category user id will be restaurant id
-  if (String(category.restaurant) !== userId) return res.sendStatus(401);
-  await deleteCategory({ _id: categoryId });
+  const orderId = get(req, "params.orderId");
+  const order = await findOrder({ _id: orderId });
+  if (!order) return res.sendStatus(404);
+  // order user id will be restaurant id
+  if (String(order.restaurant) !== userId) return res.sendStatus(401);
+  await deleteOrder({ _id: orderId });
   return res.sendStatus(200);
+}
+
+let driver_Info = (data) => undefined;
+let drivers_Info;
+
+export async function socket_getDriver(io, socket) {
+  driver_Info = (data) => {
+    socket.emit("socket_getDriver", data);
+  };
+  drivers_Info = (data) => {
+    socket.on("send_companyId", () => {
+      findOrders({}).then((data) => socket.emit("socket_getAllOrders", data));
+    });
+  };
 }

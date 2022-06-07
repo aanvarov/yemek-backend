@@ -2,9 +2,7 @@ import Restaurant, { RestaurantDocument } from "../models/restaurant.model";
 import { DocumentDefinition, FilterQuery, LeanDocument } from "mongoose";
 import { omit } from "lodash";
 
-export async function createRestaurant(
-  input: DocumentDefinition<RestaurantDocument>
-) {
+export async function createRestaurant(input: DocumentDefinition<RestaurantDocument>) {
   try {
     return await Restaurant.create(input);
   } catch (error) {
@@ -15,6 +13,14 @@ export async function createRestaurant(
 export async function findRestaurant(query: FilterQuery<RestaurantDocument>) {
   try {
     return await Restaurant.findOne(query).lean();
+  } catch (error) {
+    throw new Error(error);
+  }
+}
+
+export async function findRestaurants(query: FilterQuery<RestaurantDocument>) {
+  try {
+    return await Restaurant.find(query).lean();
   } catch (error) {
     throw new Error(error);
   }

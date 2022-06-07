@@ -9,11 +9,7 @@ import { get } from "lodash";
 import { findUser } from "./user.service";
 import { findRestaurant } from "./restaurant.service";
 
-export async function createSession(
-  userId: string,
-  userAgent: string,
-  userIpAddress: string
-) {
+export async function createSession(userId: string, userAgent: string, userIpAddress: string) {
   const session = await Session.create({
     user: userId,
     userAgent,
@@ -27,12 +23,8 @@ export async function createUserAccessToken({
   user,
   session,
 }: {
-  user:
-    | Omit<UserDocument, "password">
-    | LeanDocument<Omit<UserDocument, "password">>;
-  session:
-    | Omit<SessionDocument, "password">
-    | LeanDocument<Omit<SessionDocument, "password">>;
+  user: Omit<UserDocument, "password"> | LeanDocument<Omit<UserDocument, "password">>;
+  session: Omit<SessionDocument, "password"> | LeanDocument<Omit<SessionDocument, "password">>;
 }) {
   // build and return the new access token
   const accessToken = sign(
@@ -57,9 +49,7 @@ export async function createRestaurantAccessToken({
   restaurant:
     | Omit<RestaurantDocument, "password">
     | LeanDocument<Omit<RestaurantDocument, "password">>;
-  session:
-    | Omit<SessionDocument, "password">
-    | LeanDocument<Omit<SessionDocument, "password">>;
+  session: Omit<SessionDocument, "password"> | LeanDocument<Omit<SessionDocument, "password">>;
 }) {
   // build and return the new access token
   const accessToken = sign(
@@ -75,11 +65,7 @@ export async function createRestaurantAccessToken({
   return accessToken;
 }
 
-export async function reIssueAccessToken({
-  refreshToken,
-}: {
-  refreshToken: string;
-}) {
+export async function reIssueAccessToken({ refreshToken }: { refreshToken: string }) {
   // decode the refresh token
   const { decoded } = decode(refreshToken);
   // console.log('decodedddddd', decoded);

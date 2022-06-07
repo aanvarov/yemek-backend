@@ -41,6 +41,7 @@ export async function updateCategoryHandler(req: Request, res: Response) {
   }
 
   const isExist = await findCategory({
+    _id: { $ne: categoryId },
     name: update.name,
     restaurant: userId,
   });
@@ -63,6 +64,22 @@ export async function getCategoriesHandler(req: Request, res: Response) {
   const userId = get(req, "user._id");
   console.log("jeeee", userId);
   const categories = await findCategories({ restaurant: userId });
+  return res.send(categories);
+}
+
+export async function getCategoriesHandlerMobile(req: Request, res: Response) {
+  // const userId = get(req, "user._id");
+  const resId = get(req, "params.resId");
+  console.log("veeeee", resId);
+  // console.log("jeeee", userId);
+  const categories = await findCategories({ restaurant: resId });
+  // unique categories delete duclicate name
+  // const uniqueCategories = categories.reduce((acc, cur) => {
+  //   if (!acc.some((item) => item.name === cur.name)) {
+  //     acc.push(cur);
+  //   }
+  //   return acc;
+  // }, []);
   return res.send(categories);
 }
 
