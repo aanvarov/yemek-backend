@@ -36,10 +36,12 @@ export interface OrderDocument extends mongoose.Document {
   restaurant: RestaurantDocument["_id"];
   createdAt: Date;
   updatedAt: Date;
+  customer: UserDocument["_id"];
 }
 
 const OrderSchema = new Schema(
   {
+    orderId: { type: String, required: true },
     status: {
       type: String,
       enum: Object.values(OrderStatus),
@@ -61,7 +63,7 @@ const OrderSchema = new Schema(
     deliveryFee: { type: Number, default: 0 },
     deliveredBy: { type: Schema.Types.ObjectId, ref: "User" },
     estimatedTime: { type: Date, default: Date.now },
-    geoLocation: { type: String, required: true },
+    // geoLocation: { type: String, default: "" },
     cancelledAt: { type: Date, default: null },
     deliveredAt: { type: Date, default: null },
     deliveryAddress: { type: String, default: "" },
@@ -71,6 +73,9 @@ const OrderSchema = new Schema(
     deliveryPhone: { type: String, default: "" },
     deliveryLocation: { type: String, default: "" },
     restaurant: { type: Schema.Types.ObjectId, ref: "Restaurant" },
+    customer: { type: Schema.Types.ObjectId, ref: "User" },
+    paymentType: { type: String, default: "Cash" },
+    deliveryBy: { type: Schema.Types.ObjectId, ref: "User" },
   },
   {
     timestamps: true,

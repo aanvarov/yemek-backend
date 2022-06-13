@@ -5,6 +5,7 @@ import {
   createOrderHandler,
   updateOrderHandler,
   getOrdersHandler,
+  getOrdersHandlerMobile,
   getOrderHandler,
   deleteOrderHandler,
 } from "../controllers/order.controller";
@@ -17,34 +18,21 @@ import {
 } from "../schema/order.schema";
 
 // create a order
-router.post(
-  "/",
-  [requiresUser, validateRequest(createOrderSchema)],
-  createOrderHandler
-);
+router.post("/", requiresUser, createOrderHandler);
 
 // get all order (, requiresUser)
 router.get("/", requiresUser, getOrdersHandler);
 
+// get all orders by user customer
+router.get("/mobile", requiresUser, getOrdersHandlerMobile);
+
 // get a order
-router.get(
-  "/:orderId",
-  [requiresUser, validateRequest(getOrderSchema)],
-  getOrderHandler
-);
+router.get("/:orderId", requiresUser, getOrderHandler);
 
 // update a order
-router.put(
-  "/:orderId",
-  [requiresUser, validateRequest(updateOrderSchema)],
-  updateOrderHandler
-);
+router.put("/:orderId", requiresUser, updateOrderHandler);
 
 // delete a order
-router.delete(
-  "/:orderId",
-  [requiresUser, validateRequest(deleteOrderSchema)],
-  deleteOrderHandler
-);
+router.delete("/:orderId", requiresUser, deleteOrderHandler);
 
 export default router;

@@ -1,13 +1,14 @@
-import { omit } from 'lodash';
-import { DocumentDefinition, FilterQuery, LeanDocument } from 'mongoose';
-import User, { UserDocument } from '../models/user.model';
+import { omit } from "lodash";
+import { DocumentDefinition, FilterQuery, LeanDocument } from "mongoose";
+import User, { UserDocument } from "../models/user.model";
 
 export async function createUser(input: DocumentDefinition<UserDocument>) {
-  try {
-    return await User.create(input);
-  } catch (error) {
-    throw new Error(error);
+  // checking if the user already exists
+  const user = await User.findOne({ phone: input.phone });
+  if (user) {
+    throw new Error("User phone already exists");
   }
+  return await User.create(input);
 }
 
 export async function findUser(query: FilterQuery<UserDocument>) {
@@ -22,7 +23,7 @@ export async function validateUserPassword({
   phone,
   password,
 }: {
-  phone: UserDocument['phone'];
+  phone: UserDocument["phone"];
   password: string;
 }) {
   // lean method returns a plain javascript object, not a mongoose document
@@ -34,7 +35,7 @@ export async function validateUserPassword({
 
   if (!isValid) return false;
 
-  return omit(user.toJSON(), 'password') as
-    | Omit<UserDocument, 'password'>
-    | LeanDocument<Omit<UserDocument, 'password'>>;
+  return omit(user.toJSON(), "password") as
+    | Omit<UserDocument, "password">
+    | LeanDocument<Omit<UserDocument, "password">>;
 }

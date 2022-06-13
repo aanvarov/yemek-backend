@@ -26,7 +26,10 @@ export async function findOrders(
   options: QueryOptions = { lean: true }
 ) {
   try {
-    return await Order.find(query, {}, options);
+    return await Order.find(query, {}, options)
+      .populate("customer")
+      .populate("restaurant")
+      .populate("items");
   } catch (error) {
     throw new Error(error);
   }
