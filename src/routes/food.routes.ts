@@ -8,6 +8,7 @@ import {
   getFoodHandler,
   updateFoodHandler,
   deleteFoodHandler,
+  getFoodsHandlerMobileAll,
 } from "../controllers/food.controller";
 import {
   createFoodSchema,
@@ -25,6 +26,8 @@ router.get("/", requiresUser, getFoodsHandler);
 // get all foods mobile
 router.get("/mobile/:resId", requiresUser, getFoodsHandlerMobile);
 
+// get all foods mobile
+router.get("/mobile", requiresUser, getFoodsHandlerMobileAll);
 // get a food
 router.get("/:foodId", [requiresUser, validateRequest(getFoodSchema)], getFoodHandler);
 

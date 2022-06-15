@@ -16,6 +16,13 @@ export async function createOrderHandler(req: Request, res: Response) {
     const body = req.body;
     const mobileUser = await findUser({ _id: userId });
     const restaurantId = body.items[0].restaurant._id;
+    console.log(body);
+    let items = [];
+    body.items.map((item) => {
+      for (let i = 0; i < item.counter; i++) {
+        items.push(item);
+      }
+    });
     const ordersCount = await findOrders({
       restaurant: restaurantId,
     });
@@ -29,12 +36,13 @@ export async function createOrderHandler(req: Request, res: Response) {
       orderId = `#00${ordersCount.length + 1}`;
     }
 
-    // console.log(body.items[0].restaurant._id);
+    console.log(body.items[0].restaurant._id);
     const order = await createOrder({
       ...body,
       customer: userId,
       orderId,
       restaurant: restaurantId,
+      items,
     });
     console.log("order", order);
     return res.status(201).send(order);

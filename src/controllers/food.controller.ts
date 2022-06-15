@@ -61,6 +61,13 @@ export async function getFoodsHandlerMobile(req: Request, res: Response) {
   // log.info(foods);
   return res.send(foods);
 }
+export async function getFoodsHandlerMobileAll(req: Request, res: Response) {
+  // const userId = get(req, "user._id");
+  // const resId = get(req, "params.resId");
+  const foods = await findFoods({});
+  // log.info(foods);
+  return res.send(foods);
+}
 
 export async function getFoodHandler(req: Request, res: Response) {
   const userId = get(req, "user._id");
