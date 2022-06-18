@@ -35,6 +35,18 @@ io.on("connection", (client) => {
     console.log(data);
     io.emit("eshak", data);
   });
+  client.on("updateFood", () => {
+    console.log("updateFood status");
+    io.emit("updateFoodStatus");
+  });
+  client.on("order-created-back", () => {
+    console.log("order-created-back");
+    io.emit("order-created");
+  });
+  client.on("orderStatus", () => {
+    console.log("order-created-back");
+    io.emit("order-created");
+  });
   client.on("disconnect", (err) => {
     console.log(err, "error");
 

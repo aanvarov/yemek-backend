@@ -58,21 +58,21 @@ export async function updateOrderHandler(req: Request, res: Response) {
     const userId = get(req, "user._id");
     const orderId = get(req, "params.orderId");
     const update = req.body;
-
     const order = await findOrder({ _id: orderId });
 
     if (!order) {
       return res.sendStatus(404);
     }
 
-    // order user id will be restaurant id
+    // // order user id will be restaurant id
     if (String(order.customer) !== String(userId)) {
-      return res.sendStatus(401);
+      if (String(order.restaurant) !== String(userId)) {
+        return res.sendStatus(401);
+      }
     }
     const updatedOrder = await updateOrder({ _id: orderId }, update, {
       new: true,
     });
-
     return res.send(updatedOrder);
   } catch (error) {
     log.error("Error updating order");

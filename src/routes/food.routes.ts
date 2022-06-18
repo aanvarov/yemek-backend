@@ -32,7 +32,7 @@ router.get("/mobile", requiresUser, getFoodsHandlerMobileAll);
 router.get("/:foodId", [requiresUser, validateRequest(getFoodSchema)], getFoodHandler);
 
 // update a food
-router.put("/:foodId", [requiresUser, validateRequest(updateFoodSchema)], updateFoodHandler);
+router.put("/:foodId", requiresUser, updateFoodHandler);
 
 // delete a food
 router.delete("/:foodId", [requiresUser, validateRequest(deleteFoodSchema)], deleteFoodHandler);

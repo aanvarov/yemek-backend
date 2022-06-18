@@ -19,6 +19,7 @@ export async function createFoodHandler(req: Request, res: Response) {
 }
 
 export async function updateFoodHandler(req: Request, res: Response) {
+  console.log("udadadada");
   const userId = get(req, "user._id");
   const foodId = get(req, "params.foodId");
   const update = req.body;
