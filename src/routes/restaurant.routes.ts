@@ -1,7 +1,10 @@
 import express from "express";
 import { requiresUser, validateRequest } from "../middleware";
 const router = express.Router();
-import { getRestaurantsHandlerMobile } from "../controllers/restaurant.controller";
+import {
+  getRestaurantsHandlerMobile,
+  updateRestaurantHandler,
+} from "../controllers/restaurant.controller";
 
 import {
   createCategorySchema,
@@ -16,8 +19,11 @@ import {
 // get all categories (, requiresUser)
 // router.get("/", requiresUser, getCategoriesHandler);
 
-// get all categories mobile
+// get all restaurants mobile
 router.get("/mobile", requiresUser, getRestaurantsHandlerMobile);
+
+// update restaurant
+router.put("/:resId", requiresUser, updateRestaurantHandler);
 
 // get a category
 // router.get("/:categoryId", [requiresUser, validateRequest(getCategorySchema)], getCategoryHandler);

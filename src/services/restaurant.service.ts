@@ -1,5 +1,5 @@
 import Restaurant, { RestaurantDocument } from "../models/restaurant.model";
-import { DocumentDefinition, FilterQuery, LeanDocument } from "mongoose";
+import { DocumentDefinition, FilterQuery, LeanDocument, UpdateQuery, QueryOptions } from "mongoose";
 import { omit } from "lodash";
 
 export async function createRestaurant(input: DocumentDefinition<RestaurantDocument>) {
@@ -8,6 +8,14 @@ export async function createRestaurant(input: DocumentDefinition<RestaurantDocum
   } catch (error) {
     throw new Error(error);
   }
+}
+
+export async function updateRestaurant(
+  query: FilterQuery<RestaurantDocument>,
+  update: UpdateQuery<RestaurantDocument>,
+  options: QueryOptions = { lean: true }
+) {
+  return await Restaurant.findOneAndUpdate(query, update, options);
 }
 
 export async function findRestaurant(query: FilterQuery<RestaurantDocument>) {
