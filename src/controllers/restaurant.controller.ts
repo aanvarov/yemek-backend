@@ -21,7 +21,7 @@ export async function createRestaurantHandler(req: Request, res: Response) {
 
 export async function updateRestaurantHandler(req: Request, res: Response) {
   try {
-    const userId = get(req, "user.id");
+    const userId = get(req, "user._id");
     const resId = get(req, "params.resId");
     if (userId !== resId) {
       return res.status(403).json({ error: "You are not allowed to update this restaurant" });

@@ -34,6 +34,5 @@ export default (app: Express): void => {
   app.use("/api/v1/restaurants", restaurantRoute);
 
   // app.use('/api/v1/favorite', routes.favorite);
-  // app.use('/api/v1/order', routes.order);
   // app.use('/api/v1/rating', routes.rating);
 };
