@@ -11,6 +11,15 @@ export async function createUser(input: DocumentDefinition<UserDocument>) {
   return await User.create(input);
 }
 
+export async function updateUser(id: string, input: DocumentDefinition<UserDocument>) {
+  console.log("input", input, id);
+  const user = await User.findByIdAndUpdate(id, input, { new: true });
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return user;
+}
+
 export async function findUser(query: FilterQuery<UserDocument>) {
   try {
     return await User.findOne(query).lean();

@@ -80,9 +80,7 @@ UserSchema.pre("save", async function (next) {
 });
 
 // Used for logging in
-UserSchema.methods.comparePassword = async function (
-  candidatePassword: string
-): Promise<boolean> {
+UserSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
   const user = this as UserDocument;
   const isMatch = await bcrypt.compare(candidatePassword, user.password);
   return isMatch;
